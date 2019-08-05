@@ -2,14 +2,17 @@ version: '3'
 
 services:
   gdbserver:
-    build: .
-    security_opt: # options needed for gdb debugging
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: clion_dev
+    security_opt:
       - seccomp:unconfined
-      - apparmor:unconfined
     container_name: debug
     ports:
       - "7776:22"
       - "7777:7777"
     volumes:
-      - .:/code
-
+      - .:/home/debugger/code
+    working_dir: /home/debugger/code
+    hostname: debug

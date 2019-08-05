@@ -43,32 +43,77 @@ the latest Docker CE installation would be sufficient.
 
 To debug the example, follow the following steps. If you have any problem, please refer to the [official tutorial](https://blog.jetbrains.com/clion/2018/09/initial-remote-dev-support-clion/) before opening an issue.
 
-0. Import the project into CLion using the provided `CMakeLists.txt`.
+###Step1 - Dockerfile
 
-0. Build the container.
+Modify [this Dockerfile](https://github.com/gjgjh/docker-clion-dev/blob/master/Dockerfile) to install any dependencies your project needs. Add the Dockerfile to your project. The default dockerfile provides essential building tools when developing c++.
 
-    ```bash
-    docker build -t liuempire/docker_clion_dev .
-    ```
+### Step2 - Docker Compose
 
-0. Launch the container with `docker-compose`.
+In the same directory as the previous docker file, create a [docker-compose.yaml](https://github.com/gjgjh/docker-clion-dev/blob/master/docker-compose.yml) file. You can also use the default docker-compose file.
 
-    ```bash
-    docker-compose up -d
-    ```
-    After this step, the container is running with an ssh server daemon. Clion will automatically run/test/debug via an ssh connection. The folder where `docker-compose.yml` locates will be the mapped to `/home/debugger/code` within the container. CLion will *not* use this mapped directory.
+### Step3
 
-0. Configure the container toolchain in Clion. Go to ***Settings/Preferences | Build, Execution, Deployment | Toolchains***, configure the container as a remote host. The username is `debugger`. The password is `pwd`. The completed configurations should be similar to the following: ![Toolchain configuration](configs/toolchain-config.png)
+Ensure that the `Dockerfile` and `docker-compose.yml` files are in the same directory.
 
-0. Configure the container CMake settings in CLion. Go to ***Settings/Preferences | Build, Execution, Deployment | CMake***, add a container CMake profile:![CMake configuration](configs/cmake-config.png)
+#### Option 3A (With CLion Docker Plugin)
 
-0. Check the file mapping settings in Clion. Before each run, code will be `rsync`-ed to the container at a temporary location. The following configuration should be generated automatically after the previous two steps:![Deployment configuration](configs/deployment-auto-config.png)
+Right-click the `docker-compose.yml` file and select `Run`.
 
-0. In your Clion, you should be able to select `Debug-Local container` in before execution.
+![1](configs/1.png)
 
-0. Add breakpoints in Clion. Happy debugging!
+After a minute or two the container should be created and be viewable from Clion's Docker tab.
 
-To stop the container, run `docker-compose down`.
+![1](configs/2.png)
+
+####Option 3B (Without CLion Docker Plugin)
+
+From the directory containing the `Dockerfile` and `docker-compose.yml` files, run:
+
+```bash
+docker-compose up -d
+```
+After this step, the container is running with an ssh server daemon. Clion will automatically run/test/debug via an ssh connection. The folder where `docker-compose.yml` locates will be the mapped to `/home/debugger/code` within the container. CLion will *not* use this mapped directory.
+
+### Step 4 - Configure Toolchain
+
+Open **Settings->Build, Execution, Deplyment -> Toolchains** and create a new **Remote Host**Toolchain.
+
+In the **Credentials** field click the small folder on the right side and enter the credentials for the debugger user created in the Dockerfile.
+
+In the example above the username is "debugger" and the password is "pwd".
+
+![1](configs/3.png)
+
+### Step 5 - CMake Profile
+
+Now we must set up a CMake profile to make use of our new Remote Host toolchain.
+
+Navigate to **Settings->Build, Execution, Deplyment -> Cmake** and create a new profile. The only necessary change is selecting the toolchain created in the previous step.
+
+![1](configs/4.png)
+
+### Step 6 - Running/Debugging the Program
+
+From the CMake tab, make sure that you have the newly created CMake profile selected.
+
+![1](configs/5.png)
+
+After the CMake project loads into the container, you should be able to select the CMakeProfile you would like to use in the run configuration switcher in the top right corner of CLion.
+
+![1](configs/6.png)
+
+Hopefully if everything went well you should now be able to run and ebug code in a docker container!
+
+## Reference
+
+Some references may also be helpful:
+
+- [How to code/run programs in a Docker container using CLion?](https://stackoverflow.com/a/55424792/10974014)
+
+- [docker-clion-dev Guide](https://github.com/shuhaoliu/docker-clion-dev)
+- [CLion Remote Project Guide](https://blog.jetbrains.com/clion/2018/09/initial-remote-dev-support-clion/)
+- [Clion CMake Profiles](https://www.jetbrains.com/help/clion/cmake-profile.html)
+- [CLion CMake Toolchains](https://www.jetbrains.com/help/clion/how-to-create-toolchain-in-clion.html)
 
 ## Customization
 
