@@ -43,7 +43,7 @@ the latest Docker CE installation would be sufficient.
 
 To debug the example, follow the following steps. If you have any problem, please refer to the [official tutorial](https://blog.jetbrains.com/clion/2018/09/initial-remote-dev-support-clion/) before opening an issue.
 
-###Step1 - Dockerfile
+### Step1 - Dockerfile
 
 Modify [this Dockerfile](https://github.com/gjgjh/docker-clion-dev/blob/master/Dockerfile) to install any dependencies your project needs. Add the Dockerfile to your project. The default dockerfile provides essential building tools when developing c++.
 
@@ -59,13 +59,13 @@ Ensure that the `Dockerfile` and `docker-compose.yml` files are in the same dire
 
 Right-click the `docker-compose.yml` file and select `Run`.
 
-![1](configs/1.png)
+<img src="configs/1.png" width = 50% height = 50% />
 
 After a minute or two the container should be created and be viewable from Clion's Docker tab.
 
-![1](configs/2.png)
+<img src="configs/2.png" width = 50% height = 50% />
 
-####Option 3B (Without CLion Docker Plugin)
+#### Option 3B (Without CLion Docker Plugin)
 
 From the directory containing the `Dockerfile` and `docker-compose.yml` files, run:
 
@@ -82,7 +82,7 @@ In the **Credentials** field click the small folder on the right side and enter 
 
 In the example above the username is "debugger" and the password is "pwd".
 
-![1](configs/3.png)
+<img src="configs/3.png" width = 80% height = 80% />
 
 ### Step 5 - CMake Profile
 
@@ -90,7 +90,7 @@ Now we must set up a CMake profile to make use of our new Remote Host toolchain.
 
 Navigate to **Settings->Build, Execution, Deplyment -> Cmake** and create a new profile. The only necessary change is selecting the toolchain created in the previous step.
 
-![1](configs/4.png)
+<img src="configs/4.png" width = 80% height = 80% />
 
 ### Step 6 - Running/Debugging the Program
 
