@@ -1,4 +1,4 @@
-FROM ubuntu:cosmic
+FROM ubuntu:16.04
 
 ########################################################
 # Essential packages for remote debugging and login in
