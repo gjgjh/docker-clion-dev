@@ -19,13 +19,13 @@ machine. Some packages cannot be easily installed on OS X.
 
 ## Introduction
 
-All application code, as well as its dependencies, will be installed, compiled, and ran within the container.
-Then, we launch a `gdbserver` to allow remote debugging outside of the container.
+All application code, as well as its **dependencies**, will be installed, compiled, and ran within the container.
 
 Clion supports remote debugging feature since [2018.3](https://blog.jetbrains.com/clion/2018/09/initial-remote-dev-support-clion/).
 
 The container has a long running ssh server process, such that the container can
-be placed on a remote host.
+be placed on a remote host. 本质上即在Docker容器内运行ssh server，ssh server默认端口22，进行容器端口映射为7776后，即可从本地进行远程ssh连接（类似远程调试服务器那样）。
+例如：ssh debugger@localhost -p 7776
 
 > The container exposes 2 ports. 7777 is for `gdbserver` connection. 22 for the
 ssh server. To avoid trouble when the container is launched on the development
@@ -41,7 +41,7 @@ the latest Docker CE installation would be sufficient.
 
 ## Usage
 
-To debug the example, follow the following steps. If you have any problem, please refer to the [official tutorial](https://blog.jetbrains.com/clion/2018/09/initial-remote-dev-support-clion/) before opening an issue.
+To debug the example, follow the following steps. If you have any problem, please refer to the [official tutorial](https://blog.jetbrains.com/clion/2018/09/initial-remote-dev-support-clion/) before opening an issue. 下面1-3步目的是创建带ssh server功能的Docker容器，可以不用完全按照这个步骤来，只要创建成功即可。创建成功后，可在命令行通过ssh命令测试是否能成功连接。4-6步是重点配置过程。
 
 ### Step1 - Dockerfile
 
